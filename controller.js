@@ -1,4 +1,4 @@
-const producto=[
+/*const producto=[
     {
         id:1,
         nombre:"Margarita",
@@ -25,10 +25,20 @@ const producto=[
     }
 
 
-]
+]*/
+let carrito=[]
 
+const cargar=()=>{
+    fetch("productos.php") //a donde vamos a solicitar datos
+    .then(response => response.json())
+    .then(producto=>{
+        //tenemos los datos y vamos a hacer algo con ellos
+        render(producto)
+        eventos(producto)
+    })
+}
 const menu = document.getElementById("menu")
-
+const render=(producto)=>{
 producto.forEach(producto => {
     menu.innerHTML+=`
     <div class="col col-12 col-md-4 col-lg-3">
@@ -37,13 +47,33 @@ producto.forEach(producto => {
     <div class="card-body">
         <h5>${producto.nombre}</h5>
         <select class="form-select mb-2">
-            <option>chica - ${producto.precios.chica}</option>
-            <option>mediana - ${producto.precios.mediana}</option>
-            <option>Grande - ${producto.precios.grande}</option>
+            <option value="chica">chica - ${producto.precios.chica}</option>
+            <option value="mediana">mediana - ${producto.precios.mediana}</option>
+            <option value="grande">Grande - ${producto.precios.grande}</option>
         </select>
-        <button class="btn btn-success w-100">Agregar</button>
+        <button class="btn btn-success w-100 agregar-btn">Agregar</button>
     </div>
     </div>
     </div>
     `
 });
+}
+const eventos=(producto)=>{
+const botones = document.querySelectorAll(".agregar-btn")
+botones.forEach((btn,index)=>{
+    btn.addEventListener("click",()=>{
+        const prod = producto[index]
+        const cardBody= btn.closest(".card-body")
+        const size = cardBody.querySelector("select").value
+        const total= prod.precios[size]
+        carrito.push({
+            nombre:prod.nombre,
+            size,
+            total
+        })
+        console.log(carrito)
+        
+    })
+})
+}
+cargar()
