@@ -1,4 +1,4 @@
-/*const producto=[
+const producto=[
     {
         id:1,
         nombre:"Margarita",
@@ -25,7 +25,7 @@
     }
 
 
-]*/
+]
 let carrito=[]
 
 const cargar=()=>{
